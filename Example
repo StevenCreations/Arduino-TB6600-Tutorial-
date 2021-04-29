@@ -1,0 +1,117 @@
+
+
+
+// Created by: Steven S Andrews II for example purposes. I hearby authorize the fare use of this example for reuse in your own projects. 
+// Created:4/29/2021
+
+// TB6600, Arduino mega, to NEMA 23 motor example code.
+// I am not liable for damages to your devices! ( please follow guide with the tutorial )
+
+
+
+// instructions:
+// check wireing befor running !!
+
+
+//iput your items here:
+
+//steps_pr = 6400 * the number of microsteps your driver is set to for you specific stepper 
+
+//test 1: if you do not want to use test 1 then do not change this value!, rotation value is calculated first by default before degree change.
+//rotation_amt = 0 *** number of full rotations only 
+
+//test 2: input the degree value for rotation, negative numbers and positive numbers are accepted.
+//target_ = -720   *** degrees
+
+
+int PUL             =4;                                       //define Pulse pin
+int DIR             =3;                                       //define Direction pin
+int ENA             =2;                                       //define Enable Pin
+
+int steps_pr        = 6400;                                   //steps per revolution      ( changable ) --<<<<<<<<<<<<<<<<<<<<<
+int target_         = 90;                                     // move by degree           ( changable ) --<<<<<<<<<<<<<<<<<<<<<
+int rotation_amt    = 0;                                      // rotation number          ( changable ) --<<<<<<<<<<<<<<<<<<<<<
+//-----------------------------------------------(   test 1 functions only) rotation counter only   )----------------------------
+
+bool  test_done      = false;                                 // test code finishes exicution 
+int   step_           = 0;                                    // current step
+int   rot_            = 0;                                    // current rotation
+// ----------------------------------------------(    degree specification    )--------------------------------------------------
+
+
+float step_per_degree      = 6400/360.0;                      // the number of steps in a degree 
+int   cur_step              = 0;                              // the current step (holder) must be intiger
+float calculated_step       = step_per_degree * target_;      // (180*17.7777~8 ) = 3,200.00~ 
+int   rounded_step          = abs(round(calculated_step));    // calc rounded 
+bool  test2_done            = false;                          // test code finishes exicution 
+
+
+
+
+
+void setup() {
+  pinMode (PUL, OUTPUT);  // set out pins 
+  pinMode (DIR, OUTPUT);
+  pinMode (ENA, OUTPUT);
+  digitalWrite(ENA,LOW);  // dissable on start 
+  Serial.begin(9600);     // serial open 
+}
+
+// example portion!
+void test() {
+      if (step_ < steps_pr) {
+        step_++;
+        digitalWrite(DIR,LOW);
+        digitalWrite(ENA,HIGH);
+        digitalWrite(PUL,HIGH);
+        delayMicroseconds(50);            // no less than 50 ( under torque issue.. nema 23 works )
+        digitalWrite(PUL,LOW);
+        delayMicroseconds(50);
+      }
+      if (step_ >= steps_pr){
+        rot_++;
+        step_ = 0;
+        Serial.println("rotation #: ");   // serial read out 
+        Serial.println(rot_);
+      }
+      if (rot_ >= rotation_amt ) {
+       test_done = true;
+      }
+}
+
+// example portion! -- specific degree 
+void test2() {
+  // handle - number case ( not the best way, but its a test )
+  if (target_ < 0 ) {
+  digitalWrite(DIR,HIGH);
+  }
+  if (target_ > 0 ) {
+  digitalWrite(DIR,LOW);
+  }
+  if ( cur_step < rounded_step ) {
+        cur_step++; 
+       // digitalWrite(DIR,LOW);
+        digitalWrite(ENA,HIGH);
+        digitalWrite(PUL,HIGH);
+        delayMicroseconds(50);            // no less than 50 ( under torque issue.. nema 23 works )
+        digitalWrite(PUL,LOW);
+        delayMicroseconds(50);
+  }
+   if (cur_step >= rounded_step){
+      test2_done = true;
+   }
+}
+
+
+// stop processes after completion!
+void loop() {
+  if (test_done != true){
+    test();
+  }
+  if (test2_done != true && test_done == true ){
+    test2();               
+  }
+  if  (test2_done == true && test_done == true ){
+    digitalWrite(ENA,LOW);                // disable after finish ( stops holding torque )
+  }
+}
