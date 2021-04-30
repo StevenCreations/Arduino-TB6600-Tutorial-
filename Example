@@ -29,20 +29,20 @@ int DIR             =3;                                       //define Direction
 int ENA             =2;                                       //define Enable Pin
 
 int steps_pr        = 6400;                                   //steps per revolution      ( changable ) --<<<<<<<<<<<<<<<<<<<<< set based on stepper DIP config
-int target_         = 90;                                     // move by degree           ( changable ) --<<<<<<<<<<<<<<<<<<<<< test 2 function 
+int long target_    = 90;                                     // move by degree           ( changable ) --<<<<<<<<<<<<<<<<<<<<< test 2 function 
 int rotation_amt    = 0;                                      // rotation number          ( changable ) --<<<<<<<<<<<<<<<<<<<<< 
 //-----------------------------------------------(   test 1 functions only) rotation counter only   )----------------------------
 
-bool  test_done      = false;                                 // test code finishes exicution 
+bool  test_done       = false;                                // test code finishes exicution 
 int   step_           = 0;                                    // current step
 int   rot_            = 0;                                    // current rotation
 // ----------------------------------------------(    degree specification    )--------------------------------------------------
 
 
-float step_per_degree      = 6400/360.0;                      // the number of steps in a degree 
-int   cur_step              = 0;                              // the current step (holder) must be intiger
+float step_per_degree       = 6400/360.0;                     // the number of steps in a degree 
+int long  cur_step          = 0;                              // the current step (holder) must be intiger
 float calculated_step       = step_per_degree * target_;      // (180*17.7777~8 ) = 3,200.00~ 
-int   rounded_step          = abs(round(calculated_step));    // calc rounded 
+int long  rounded_step      = abs(round(calculated_step));    // calc rounded 
 bool  test2_done            = false;                          // test code finishes exicution 
 
 
