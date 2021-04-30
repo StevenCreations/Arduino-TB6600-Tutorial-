@@ -28,9 +28,9 @@ int PUL             =4;                                       //define Pulse pin
 int DIR             =3;                                       //define Direction pin
 int ENA             =2;                                       //define Enable Pin
 
-int steps_pr        = 6400;                                   //steps per revolution      ( changable ) --<<<<<<<<<<<<<<<<<<<<<
-int target_         = 90;                                     // move by degree           ( changable ) --<<<<<<<<<<<<<<<<<<<<<
-int rotation_amt    = 0;                                      // rotation number          ( changable ) --<<<<<<<<<<<<<<<<<<<<<
+int steps_pr        = 6400;                                   //steps per revolution      ( changable ) --<<<<<<<<<<<<<<<<<<<<< set based on stepper DIP config
+int target_         = 90;                                     // move by degree           ( changable ) --<<<<<<<<<<<<<<<<<<<<< test 2 function 
+int rotation_amt    = 0;                                      // rotation number          ( changable ) --<<<<<<<<<<<<<<<<<<<<< 
 //-----------------------------------------------(   test 1 functions only) rotation counter only   )----------------------------
 
 bool  test_done      = false;                                 // test code finishes exicution 
